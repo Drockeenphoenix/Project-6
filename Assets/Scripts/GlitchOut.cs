@@ -34,6 +34,7 @@ public class GlitchOut : MonoBehaviour
     [SerializeField] private float minGlitchInterval = 2f;
     [SerializeField] private float maxGlitchTime = 30f;
     [SerializeField] private float timeInSceneAfterGlitch = 5f;
+    [SerializeField] private Terrain terrain;
     private float currentGlitchTime = 0f;
     private bool currentlyGlitching = false;
     private bool swappingScenes = false;
@@ -85,6 +86,15 @@ public class GlitchOut : MonoBehaviour
         SetMeshesToNormal();
         int objsToGlitch = Mathf.CeilToInt(Mathf.Lerp(1, sceneMeshRenderers.Count, currentGlitchTime / maxGlitchTime));
         float glitchInterval = Mathf.Lerp(maxGlitchInterval, minGlitchInterval, 1.5f * currentGlitchTime / maxGlitchTime);
+
+        if (1.5f * currentGlitchTime / maxGlitchTime >= 0.85f) {
+            terrain.materialTemplate = blankMaterial;
+        }
+        
+        if (1.5f * currentGlitchTime / maxGlitchTime >= 1.1f) {
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = Color.white;
+        }
 
         GlitchObjects(objsToGlitch);
         
